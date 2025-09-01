@@ -10,6 +10,7 @@ import com.ecommerce.project.payload.ProductDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
+import com.ecommerce.project.util.AuthUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class CartServiceImpl implements CartService {
         );
 
         if (cartItem != null) {
-            throw new APIException("Product " + product.getProductName() + "already exists in the cart");
+            throw new APIException("Product " + product.getProductName() + " already exists in the cart");
         }
 
         if (product.getQuantity() == 0) {
@@ -89,7 +90,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private Cart createCart() {
-        Cart userCart = cartRepository.findCartByEmail(authUtil.loggedEmail());
+        Cart userCart = cartRepository.findCartByEmail(authUtil.loggedInEmail());
         if (userCart != null) {
             return userCart;
         }
